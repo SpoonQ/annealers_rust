@@ -182,6 +182,16 @@
 <span id="165">165</span>
 <span id="166">166</span>
 <span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Rust bindings of Quantum Annealer, CMOS Annealer, Digital Annealer, etc.</span>
 <span class="doccomment">//!</span>
@@ -196,6 +206,17 @@
 <span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">rngs</span>::{<span class="ident">OsRng</span>, <span class="ident">SmallRng</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::{<span class="ident">Send</span>, <span class="ident">Sync</span>};
+
+<span class="doccomment">/// Re-export often used crates.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Usage</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use annealers::prelude::*;</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span> {
+	<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Annealer</span>;
+	<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AnnealerInfo</span>;
+}
 
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rand</span>;
 
@@ -242,8 +263,7 @@
 	<span class="doccomment">/// the code will solve it:</span>
 	<span class="doccomment">/// ```ignore</span>
 	<span class="doccomment">/// let h = vec![1.0, 2.0, 3.0];</span>
-	<span class="doccomment">/// let neighbors = vec![vec![(1, 1.5)], vec![(2, 2.5)]];</span>
-	<span class="doccomment">/// let ans = some_ainfo.build_with_ising(h, neighbors);</span>
+	<span class="doccomment">/// let neighbors = vec![vec![(1, 1.5)], vec![(2, 2.5)], vec![]];</span>
 	<span class="doccomment">/// ```</span>
 	<span class="doccomment">///</span>
 	<span class="doccomment">/// # Arguments</span>

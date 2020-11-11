@@ -119,7 +119,37 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! Default annealing implementation.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This annealer use *simulated annealing* on local machine.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Example:</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//! use annealers::anneal::DefaultAnnealerInfo;</span>
+<span class="doccomment">//! use annealers::prelude::*;</span>
+<span class="doccomment">//! let ainfo = DefaultAnnealerInfo::new();</span>
+<span class="doccomment">//! let h = vec![1.0, -1.0, 0.0];</span>
+<span class="doccomment">//! let neighbors = vec![vec![(2, 1.0)], vec![], vec![]];</span>
+<span class="doccomment">//! let annealer = ainfo.build_with_ising(h, neighbors).unwrap();</span>
+<span class="doccomment">//! assert_eq!(annealer.anneal().unwrap(), vec![false, true, true]);</span>
+<span class="doccomment">//! ```</span>
+
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">qubit</span>::<span class="ident">QubitState</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Annealer</span>, <span class="ident">AnnealerInfo</span>, <span class="ident">BetaType</span>, <span class="ident">NoneError</span>};
 <span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;

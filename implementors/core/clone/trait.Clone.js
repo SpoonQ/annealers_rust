@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["annealers"] = [{"text":"impl Clone for DefaultAnnealerInfo","synthetic":false,"types":[]},{"text":"impl Clone for DefaultAnnealer","synthetic":false,"types":[]},{"text":"impl Clone for BetaType","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

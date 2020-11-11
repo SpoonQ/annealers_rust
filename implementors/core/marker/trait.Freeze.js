@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["annealers"] = [{"text":"impl Freeze for NoneError","synthetic":true,"types":[]},{"text":"impl Freeze for BetaType","synthetic":true,"types":[]},{"text":"impl Freeze for DefaultAnnealerInfo","synthetic":true,"types":[]},{"text":"impl Freeze for DefaultAnnealer","synthetic":true,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["annealers"] = [{"text":"impl Sync for NoneError","synthetic":true,"types":[]},{"text":"impl Sync for BetaType","synthetic":true,"types":[]},{"text":"impl Sync for DefaultAnnealerInfo","synthetic":true,"types":[]},{"text":"impl Sync for DefaultAnnealer","synthetic":true,"types":[]}];
+implementors["annealers"] = [{"text":"impl Sync for NoneError","synthetic":true,"types":[]},{"text":"impl Sync for BetaType","synthetic":true,"types":[]},{"text":"impl Sync for DefaultAnnealerInfo","synthetic":true,"types":[]},{"text":"impl Sync for DefaultAnnealer","synthetic":true,"types":[]},{"text":"impl Sync for DWaveAnnealerInfo","synthetic":true,"types":[]},{"text":"impl Sync for DWaveAnnealer","synthetic":true,"types":[]},{"text":"impl Sync for ApiError","synthetic":true,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

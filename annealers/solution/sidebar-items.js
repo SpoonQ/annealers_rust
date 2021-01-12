@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SingleSolution",""]],"trait":[["Solution",""]]});

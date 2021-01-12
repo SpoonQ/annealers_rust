@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HighOrder",""],["Quadric",""]],"trait":[["Order",""]]});

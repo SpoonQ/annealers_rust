@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["annealers"] = [{"text":"impl Error for ApiError","synthetic":false,"types":[]},{"text":"impl Error for NoneError","synthetic":false,"types":[]}];
+implementors["classical_solver"] = [{"text":"impl Error for NoneError","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

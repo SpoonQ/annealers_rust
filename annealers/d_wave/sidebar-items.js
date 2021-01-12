@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["ApiError",""]],"struct":[["DWaveAnnealer",""],["DWaveAnnealerInfo",""]]});

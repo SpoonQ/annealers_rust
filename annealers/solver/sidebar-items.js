@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AsStructuredSolverGeneratorWrapper",""],["UnstructuredEdgeIter",""]],"trait":[["AsyncSolver",""],["ClassicalSolver",""],["Solver",""],["SolverGenerator",""],["StructuredSolverGenerator",""],["SyncSolver",""],["UnstructuredSolverGenerator",""]]});

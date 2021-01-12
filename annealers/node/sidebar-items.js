@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Binary",""],["DiscreteNode",""],["Spin",""],["TwoVal",""]],"trait":[["Node",""],["SingleNode",""]]});

@@ -1,0 +1,15 @@
+[package]
+name = "annealers"
+version = "0.1.0"
+authors = ["yozu <yasuo@ozu.email>"]
+edition = "2018"
+publish = false
+readme = "README.md"
+license = "UNLICENSED"
+description = "Rust bindings of Quantum Annealer, CMOS Annealer, Digital Annealer, etc."
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = { version = "0.7.3", features = ["small_rng"] }
+async-trait = "0.1"

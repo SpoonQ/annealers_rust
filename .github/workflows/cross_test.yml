@@ -1,0 +1,71 @@
+name: cross_test
+  
+on:
+    push:
+        branches:
+            - main
+            - develop
+jobs:
+  build:
+      strategy:
+        matrix:
+          target:
+            - x86_64-unknown-linux-gnu
+            - x86_64-pc-windows-gnu
+            - x86_64-apple-darwin
+          include:
+            - target: x86_64-unknown-linux-gnu
+              os: ubuntu-latest
+            - target: x86_64-pc-windows-gnu
+              os: ubuntu-latest
+            - target: x86_64-apple-darwin
+              os: macos-latest
+
+      runs-on: ${{ matrix.os }}
+
+      steps:
+        - name: install lacking commands on ubuntu
+          if: ${{ matrix.os == 'ubuntu-latest' }}
+          run: |
+            which sudo && sudo apt update
+            which sudo || apt update
+            which sudo && sudo apt install -y python3 git
+            which sudo || apt install -y python3 git
+            which sudo && [ -e "/usr/bin/python" ] || sudo ln -s /usr/bin/python3 /usr/bin/python
+            which sudo || [ -e "/usr/bin/python" ] || ln -s /usr/bin/python3 /usr/bin/python
+            
+        - name: check python3 installation
+          if: ${{ matrix.os == 'ubuntu-latest' }}
+          run: |
+            which python3
+          
+        - uses: actions/checkout@v1
+        - name: Checkout submodules
+          run: git submodule update --init --recursive
+
+        # https://github.com/actions/cache/blob/master/examples.md#rust---cargo
+        - name: Cache cargo registry
+          uses: actions/cache@v1
+          with:
+            path: ~/.cargo/registry
+            key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        - name: Cache cargo index
+          uses: actions/cache@v1
+          with:
+            path: ~/.cargo/git
+            key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+        - name: Cache cargo build
+          uses: actions/cache@v1
+          with:
+            path: target
+            key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+        - uses: actions-rs/toolchain@v1
+          with:
+            toolchain: stable
+            override: true
+        - uses: actions-rs/cargo@v1.0.1
+          with:
+            command: test
+            args: --target=${{ matrix.target }}
+            use-cross: true

@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "src/annealers",
+    "src/classical_solver",
+]

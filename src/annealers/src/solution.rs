@@ -1,3 +1,4 @@
+use crate::model::SingleModel;
 use crate::node::{Node, SingleNode};
 use crate::repr::BinaryRepr;
 use std::marker::PhantomData;
@@ -41,6 +42,26 @@ impl<M: SingleNode> SingleSolution<M> {
 			e1.partial_cmp(&e2)
 		} else {
 			None
+		}
+	}
+
+	pub fn with_energy<P: SingleModel<NodeType = M>>(mut self, model: &P) -> Self {
+		self.energy = Some(self.calculate_energy(model));
+		self
+	}
+
+	pub fn calculate_energy<P: SingleModel<NodeType = M>>(
+		&self,
+		model: &P,
+	) -> <P::NodeType as Node>::RealType {
+		if let Some(e) = self.energy {
+			e
+		} else {
+			let mut energy = Default::default();
+			for prod in model.prods() {
+				energy += model.get_weight(&prod);
+			}
+			energy
 		}
 	}
 }

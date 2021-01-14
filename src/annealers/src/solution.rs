@@ -59,17 +59,27 @@ impl<M: SingleNode> SingleSolution<M> {
 		} else {
 			let mut energy = Default::default();
 			for prod in model.prods() {
-				energy += model.get_weight(&prod);
+				energy += model.get_weight(&prod) * model.calculate_prod(&prod, self);
 			}
 			energy
+		}
+	}
+
+	#[inline]
+	pub unsafe fn get_unchecked(&self, index: usize) -> &bool {
+		if self.state.get_unchecked(index) {
+			&TRUE_VAL
+		} else {
+			&FALSE_VAL
 		}
 	}
 }
 
 const TRUE_VAL: bool = true;
-const FALSE_VAL: bool = true;
+const FALSE_VAL: bool = false;
 impl<M: SingleNode> std::ops::Index<usize> for SingleSolution<M> {
 	type Output = bool;
+	#[inline]
 	fn index(&self, index: usize) -> &bool {
 		if self.state.get(index) {
 			&TRUE_VAL

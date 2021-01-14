@@ -1,6 +1,7 @@
 use crate::node::{Node, SingleNode};
 use crate::order::{Order, Quadric};
 use crate::set::NodeSet;
+use crate::solution::SingleSolution;
 use std::iter::IntoIterator;
 use std::marker::PhantomData;
 
@@ -45,6 +46,16 @@ pub trait SingleModel: Clone {
 
 	fn prods(&self) -> Self::ProdsIter;
 	fn neighbors(&self, u: usize) -> Self::NeighborsIter;
+
+	#[inline]
+	fn calculate_prod(
+		&self,
+		p: &Self::NodeSetType,
+		solution: &SingleSolution<Self::NodeType>,
+	) -> <Self::NodeType as SingleNode>::RealType {
+		let v = p.to_it().map(|n| solution[n]).collect::<Vec<_>>();
+		self.node().calculate_prod(&v)
+	}
 }
 
 impl<T: SingleModel> Model for T {

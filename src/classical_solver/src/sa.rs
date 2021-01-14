@@ -73,8 +73,8 @@ impl<R: Real, P: FixedSingleModel<NodeType = Binary<R>> + Send + Sync> Classical
 		&self,
 		r: &mut T,
 	) -> Result<Vec<SingleSolution<P::NodeType>>, NoneError> {
-		//let mut state = BinaryRepr::new_random(self.model.size(), r);
-		let mut state = BinaryRepr::from_vec(&vec![true, false, true]);
+		let mut state = BinaryRepr::new_random(self.model.size(), r);
+		// let mut state = BinaryRepr::from_vec(&vec![true, false, true]);
 		simulated_annealing(
 			r,
 			&mut state,

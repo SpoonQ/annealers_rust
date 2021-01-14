@@ -11,6 +11,10 @@ pub trait Node: Clone + Send + Sync {
 pub trait SingleNode: Clone + Send + Sync {
 	type RealType: Real;
 	fn get_value(&self, b: bool) -> Self::RealType;
+	fn calculate_prod(&self, v: &[bool]) -> Self::RealType {
+		v.iter()
+			.fold(Self::RealType::from_i32(1), |m, b| m * self.get_value(*b))
+	}
 }
 
 impl<T: SingleNode> Node for T {
@@ -46,6 +50,7 @@ impl<R: Real> SingleNode for Spin<R> {
 	fn get_value(&self, b: bool) -> R {
 		R::from_i32(if b { 1 } else { -1 })
 	}
+	// TODO: add calculate_prod()
 }
 
 #[derive(Clone)]
@@ -59,6 +64,7 @@ impl<R: Real> Binary<R> {
 			_phantom: PhantomData,
 		}
 	}
+	// TODO: add calculate_prod()
 }
 
 impl<R: Real> SingleNode for Binary<R> {

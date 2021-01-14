@@ -180,8 +180,8 @@
 		<span class="kw-2">&amp;</span><span class="self">self</span>,
 		<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>,
 	) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SingleSolution</span><span class="op">&lt;</span><span class="ident">P</span>::<span class="ident">NodeType</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">NoneError</span><span class="op">&gt;</span> {
-		<span class="comment">//let mut state = BinaryRepr::new_random(self.model.size(), r);</span>
-		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">BinaryRepr</span>::<span class="ident">from_vec</span>(<span class="kw-2">&amp;</span><span class="macro">vec</span><span class="macro">!</span>[<span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>]);
+		<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">BinaryRepr</span>::<span class="ident">new_random</span>(<span class="self">self</span>.<span class="ident">model</span>.<span class="ident">size</span>(), <span class="ident">r</span>);
+		<span class="comment">// let mut state = BinaryRepr::from_vec(&amp;vec![true, false, true]);</span>
 		<span class="ident">simulated_annealing</span>(
 			<span class="ident">r</span>,
 			<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">state</span>,

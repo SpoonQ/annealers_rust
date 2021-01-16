@@ -118,3 +118,170 @@ impl_real_as_f64!(false, i16, std::cmp);
 impl_real_as_f64!(false, i32, std::cmp);
 impl_real_as_f64!(false, i64, std::cmp);
 impl_real_as_f64!(false, i128, std::cmp);
+
+/// This trait is implemented between all Real types.
+pub trait ConvertForce<R: Real>: Real {
+	fn convert_force(self) -> R;
+}
+
+impl<R: Real> ConvertForce<R> for R {
+	fn convert_force(self) -> R {
+		self
+	}
+}
+
+macro_rules! impl_convert_force {
+	($r1:ty,$r2:ty) => {
+		impl ConvertForce<$r2> for $r1 {
+			#[inline]
+			fn convert_force(self) -> $r2 {
+				self as $r2
+			}
+		}
+	};
+	($r:ty) => {
+		impl_convert_force!($r, i8);
+		impl_convert_force!($r, i16);
+		impl_convert_force!($r, i32);
+		impl_convert_force!($r, i64);
+		impl_convert_force!($r, i128);
+		impl_convert_force!($r, f32);
+		impl_convert_force!($r, f64);
+	};
+}
+impl_convert_force!(i8, i16);
+impl_convert_force!(i8, i32);
+impl_convert_force!(i8, i64);
+impl_convert_force!(i8, i128);
+impl_convert_force!(i8, f32);
+impl_convert_force!(i8, f64);
+impl_convert_force!(i16, i8);
+impl_convert_force!(i16, i32);
+impl_convert_force!(i16, i64);
+impl_convert_force!(i16, i128);
+impl_convert_force!(i16, f32);
+impl_convert_force!(i16, f64);
+impl_convert_force!(i32, i8);
+impl_convert_force!(i32, i16);
+impl_convert_force!(i32, i64);
+impl_convert_force!(i32, i128);
+impl_convert_force!(i32, f32);
+impl_convert_force!(i32, f64);
+impl_convert_force!(i64, i8);
+impl_convert_force!(i64, i16);
+impl_convert_force!(i64, i32);
+impl_convert_force!(i64, i128);
+impl_convert_force!(i64, f32);
+impl_convert_force!(i64, f64);
+impl_convert_force!(i128, i8);
+impl_convert_force!(i128, i16);
+impl_convert_force!(i128, i32);
+impl_convert_force!(i128, i64);
+impl_convert_force!(i128, f32);
+impl_convert_force!(i128, f64);
+impl_convert_force!(f32, i8);
+impl_convert_force!(f32, i16);
+impl_convert_force!(f32, i32);
+impl_convert_force!(f32, i64);
+impl_convert_force!(f32, i128);
+impl_convert_force!(f32, f64);
+impl_convert_force!(f64, i8);
+impl_convert_force!(f64, i16);
+impl_convert_force!(f64, i32);
+impl_convert_force!(f64, i64);
+impl_convert_force!(f64, i128);
+impl_convert_force!(f64, f32);
+
+pub trait ConvertFrom<R: Real>: ConvertForce<R> {
+	fn convert_from(f: R) -> Self;
+}
+
+impl<R: Real + ConvertForce<R>> ConvertFrom<R> for R {
+	fn convert_from(f: R) -> Self {
+		f
+	}
+}
+
+macro_rules! impl_real_convert_from {
+	($r1: ty, $r2:ty) => {
+		impl ConvertFrom<$r1> for $r2 {
+			#[inline]
+			fn convert_from(f: $r1) -> Self {
+				f as $r2
+			}
+		}
+	};
+}
+
+pub trait ConvertTo<R: Real>: ConvertForce<R> {
+	fn convert_to(self) -> R;
+}
+
+impl<R2: ConvertFrom<R1>, R1: ConvertForce<R2>> ConvertTo<R2> for R1 {
+	fn convert_to(self) -> R2 {
+		R2::convert_from(self)
+	}
+}
+
+pub trait ConvertWith<Rhs: Real>: Real {
+	type Output: ConvertFrom<Self> + ConvertFrom<Rhs>;
+	fn convert_lhs(lhs: Self) -> <Self as ConvertWith<Rhs>>::Output;
+	fn convert_rhs(rhs: Rhs) -> <Self as ConvertWith<Rhs>>::Output;
+}
+
+impl<R: Real + ConvertFrom<R>> ConvertWith<R> for R {
+	type Output = R;
+	fn convert_lhs(lhs: R) -> R {
+		lhs
+	}
+	fn convert_rhs(rhs: R) -> R {
+		rhs
+	}
+}
+
+macro_rules! impl_real_convert_with {
+	($r1:ty,$r2:ty) => {
+		impl_real_convert_with!($r1, $r2, $r2);
+		impl_real_convert_with!($r2, $r1, $r2);
+	};
+	($lhs:ty,$rhs:ty,$out:ty) => {
+		impl ConvertWith<$rhs> for $lhs {
+			type Output = $out;
+			fn convert_lhs(lhs: $lhs) -> $out {
+				lhs as $out
+			}
+			fn convert_rhs(rhs: $rhs) -> $out {
+				rhs as $out
+			}
+		}
+	};
+}
+
+macro_rules! impl_all {
+	($r1:ty,$r2:ty) => {
+		impl_real_convert_with!($r1, $r2);
+		impl_real_convert_from!($r1, $r2);
+	};
+}
+
+impl_all!(i8, i16);
+impl_all!(i8, i32);
+impl_all!(i8, i64);
+impl_all!(i8, i128);
+impl_all!(i8, f32);
+impl_all!(i8, f64);
+impl_all!(i16, i32);
+impl_all!(i16, i64);
+impl_all!(i16, i128);
+impl_all!(i16, f32);
+impl_all!(i16, f64);
+impl_all!(i32, i64);
+impl_all!(i32, i128);
+impl_all!(i32, f32);
+impl_all!(i32, f64);
+impl_all!(i64, i128);
+impl_all!(i64, f32);
+impl_all!(i64, f64);
+impl_all!(i128, f32);
+impl_all!(i128, f64);
+impl_all!(f32, f64);

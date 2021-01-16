@@ -137,6 +137,8 @@ impl<P: FixedSingleModel> SingleModel for P {
 	}
 }
 
+// TODO: add HashMap-based model
+
 #[derive(Clone)]
 pub struct FixedSingleQuadricModel<NodeType: SingleNode> {
 	size: usize,

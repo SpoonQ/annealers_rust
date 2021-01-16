@@ -1,11 +1,14 @@
 [package]
 name = "classical_solver"
+description = "Simulated annealing implementation for annealers_rust"
 version = "0.1.0"
 authors = ["yozu <yasuo@ozu.email>"]
 edition = "2018"
+readme = "../../README.md"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 annealers = { path = "../annealers" }
-rand = { version = "0.7.3", features = ["small_rng"] }
+rand = { version = "0.7", features = ["small_rng"] }

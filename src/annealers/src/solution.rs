@@ -1,10 +1,10 @@
-use crate::model::SingleModel;
+use crate::model::SingleModelView;
 use crate::node::{Node, SingleNode};
 use crate::repr::BinaryRepr;
 use std::marker::PhantomData;
 
 pub trait Solution {
-	type NodeType: Node;
+	type Node: Node;
 }
 
 #[derive(Clone)]
@@ -16,18 +16,16 @@ pub struct SingleSolution<NodeType: SingleNode> {
 }
 
 impl<M: SingleNode> Solution for SingleSolution<M> {
-	type NodeType = M;
+	type Node = M;
 }
 
 impl<M: SingleNode> SingleSolution<M> {
-	pub fn from_value(value: &[bool]) -> Self {
-		Self::from_state(BinaryRepr::from_vec(value))
-	}
-
+	/// Generate SingleSolution from qubit values
 	pub fn from_vec(v: &[bool]) -> Self {
 		Self::from_state(BinaryRepr::from_vec(v))
 	}
 
+	/// Generate SingleSolution from BinaryRepr
 	pub fn from_state(state: BinaryRepr) -> Self {
 		Self {
 			state,
@@ -37,6 +35,12 @@ impl<M: SingleNode> SingleSolution<M> {
 		}
 	}
 
+	/// Get the number of solutions
+	pub fn len(&self) -> usize {
+		self.state.len()
+	}
+
+	/// Compare two SingleSolution by energy.
 	pub fn compare_energy(&self, other: &Self) -> Option<std::cmp::Ordering> {
 		if let (Some(e1), Some(e2)) = (self.energy, other.energy) {
 			e1.partial_cmp(&e2)
@@ -45,15 +49,17 @@ impl<M: SingleNode> SingleSolution<M> {
 		}
 	}
 
-	pub fn with_energy<P: SingleModel<NodeType = M>>(mut self, model: &P) -> Self {
+	/// Ensure that SingleSolution has energy.
+	pub fn with_energy<P: SingleModelView<Node = M>>(mut self, model: &P) -> Self {
 		self.energy = Some(self.calculate_energy(model));
 		self
 	}
 
-	pub fn calculate_energy<P: SingleModel<NodeType = M>>(
+	/// Calculate energy with model.
+	pub fn calculate_energy<P: SingleModelView<Node = M>>(
 		&self,
 		model: &P,
-	) -> <P::NodeType as Node>::RealType {
+	) -> <P::Node as Node>::RealType {
 		if let Some(e) = self.energy {
 			e
 		} else {
@@ -65,26 +71,28 @@ impl<M: SingleNode> SingleSolution<M> {
 		}
 	}
 
+	/// Get the qubit value located in `index`.
+	pub fn get(&self, index: usize) -> bool {
+		self.state.get(index)
+	}
+
+	/// Get the qubit value located in `index`.
+	/// # Safety
+	/// Given index must be less than `len()`
 	#[inline]
-	pub unsafe fn get_unchecked(&self, index: usize) -> &bool {
-		if self.state.get_unchecked(index) {
-			&TRUE_VAL
-		} else {
-			&FALSE_VAL
-		}
+	pub unsafe fn get_unchecked(&self, index: usize) -> bool {
+		self.state.get_unchecked(index)
 	}
 }
 
-const TRUE_VAL: bool = true;
-const FALSE_VAL: bool = false;
 impl<M: SingleNode> std::ops::Index<usize> for SingleSolution<M> {
 	type Output = bool;
 	#[inline]
 	fn index(&self, index: usize) -> &bool {
 		if self.state.get(index) {
-			&TRUE_VAL
+			&crate::TRUE_VAL
 		} else {
-			&FALSE_VAL
+			&crate::FALSE_VAL
 		}
 	}
 }

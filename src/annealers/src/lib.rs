@@ -7,7 +7,7 @@ pub mod solver;
 pub mod variable;
 
 pub mod prelude {
-	pub use crate::model::{FixedSingleModel, Model, SingleModel};
+	pub use crate::model::{FixedSingleModelView, SingleModelView};
 	pub use crate::solver::{ClassicalSolver, SolverGenerator, UnstructuredSolverGenerator};
 }
 
@@ -62,3 +62,6 @@ pub mod order {
 		}
 	}
 }
+
+const TRUE_VAL: bool = true;
+const FALSE_VAL: bool = false;

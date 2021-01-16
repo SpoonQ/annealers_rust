@@ -2,7 +2,7 @@
 /// Generally, beta schedule is array of `f64`, but effecient beta schedule is
 /// generated from *beta range* or *beta count*. So you can specify them in
 /// place of beta schedule.
-use annealers::model::SingleModel;
+use annealers::model::SingleModelView;
 use annealers::node::{Node, SingleNode};
 use annealers::variable::Real;
 
@@ -19,11 +19,11 @@ pub enum BetaType<R: Real> {
 
 macro_rules! real_typ {
 	($p:ty) => {
-		<<$p>::NodeType as Node>::RealType
+		<<$p>::Node as Node>::RealType
 	};
 }
 
-fn generate_beta_range<P: SingleModel>(model: &P) -> (real_typ!(P), real_typ!(P)) {
+fn generate_beta_range<P: SingleModelView>(model: &P) -> (real_typ!(P), real_typ!(P)) {
 	macro_rules! nan_or_min {
 		() => {
 			<real_typ!(P)>::nan_or(<real_typ!(P)>::MIN)
@@ -53,14 +53,14 @@ fn generate_beta_range<P: SingleModel>(model: &P) -> (real_typ!(P), real_typ!(P)
 			<real_typ!(P)>::from_f64(f64::ln(100.0) / (ndiff * eg_min).as_f64()),
 		)
 	} else {
-		(<real_typ!(P)>::from_i32(1), <real_typ!(P)>::from_i32(10))
+		(<real_typ!(P)>::one(), <real_typ!(P)>::from_i32(10))
 	}
 }
 
 /// Generate *beta schedule* from given parameters.
 /// the meanings of the parameters is the same of
 /// [`AnnealerInfo::build_with_ising()`].
-pub(crate) fn generate_schedule<P: SingleModel>(
+pub(crate) fn generate_schedule<P: SingleModelView>(
 	beta_type: &BetaType<real_typ!(P)>,
 	model: &P,
 ) -> Vec<real_typ!(P)> {

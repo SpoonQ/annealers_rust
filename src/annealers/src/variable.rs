@@ -30,12 +30,23 @@ pub trait Real:
 	fn as_f64(&self) -> f64;
 	fn from_i32(i: i32) -> Self;
 	fn from_f64(f: f64) -> Self;
-	fn is_default(&self) -> bool;
 	fn abs(self) -> Self;
 	fn min(self, other: Self) -> Self;
 	fn max(self, other: Self) -> Self;
 	fn nan_or(other: Self) -> Self;
 	fn is_finite(self) -> bool;
+
+	#[inline]
+	fn zero() -> Self {
+		Self::from_i32(0)
+	}
+
+	#[inline]
+	fn one() -> Self {
+		Self::from_i32(1)
+	}
+
+	// TODO: add compare_with_f64() and remove as_f64(), from_i32()
 }
 
 macro_rules! impl_nan_or {
@@ -73,11 +84,6 @@ macro_rules! impl_real_as_f64 {
 			#[inline]
 			fn from_f64(f: f64) -> Self {
 				f as $typ
-			}
-
-			#[inline]
-			fn is_default(&self) -> bool {
-				self == &Default::default()
 			}
 
 			#[inline]

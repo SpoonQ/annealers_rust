@@ -35,7 +35,7 @@
 //! - `SyncSolver`
 //! - `RngSolver`
 extern crate async_trait;
-use crate::model::Model;
+use crate::model::ModelView;
 use crate::node::Node;
 use crate::order::Order;
 use crate::solution::Solution;
@@ -49,11 +49,11 @@ use std::marker::PhantomData;
 
 macro_rules! get_real_typ {
 	($typ:ty) => {
-		<<$typ as Model>::NodeType as Node>::RealType
+		<<$typ as ModelView>::Node as Node>::RealType
 	};
 }
 
-pub trait SolverGenerator<ProblemType: Model> {
+pub trait SolverGenerator<'a, ProblemType: ModelView> {
 	type SolverType: Solver<ErrorType = Self::ErrorType>;
 	type ErrorType: Error + Send + Sync;
 
@@ -64,15 +64,19 @@ pub trait SolverGenerator<ProblemType: Model> {
 		)
 	}
 
-	fn generate(&self, model: &ProblemType) -> Result<Self::SolverType, Self::ErrorType>;
+	fn generate(&self, model: &'a ProblemType) -> Result<Self::SolverType, Self::ErrorType>;
 }
 
-pub trait StructuredSolverGenerator<ProblemType: Model>: SolverGenerator<ProblemType> {
+pub trait StructuredSolverGenerator<'a, ProblemType: ModelView>:
+	SolverGenerator<'a, ProblemType>
+{
 	fn nodes(&self) -> Box<dyn Iterator<Item = usize>>;
 	fn prods(&self) -> Box<dyn Iterator<Item = BTreeSet<usize>>>;
 }
 
-pub trait UnstructuredSolverGenerator<ProblemType: Model>: SolverGenerator<ProblemType> {
+pub trait UnstructuredSolverGenerator<'a, ProblemType: ModelView>:
+	SolverGenerator<'a, ProblemType>
+{
 	type Order: Order;
 
 	fn order(&self) -> Self::Order;
@@ -80,7 +84,7 @@ pub trait UnstructuredSolverGenerator<ProblemType: Model>: SolverGenerator<Probl
 		None
 	}
 
-	fn to_structured(self) -> AsStructuredSolverGeneratorWrapper<Self, ProblemType>
+	fn into_structured(self) -> AsStructuredSolverGeneratorWrapper<'a, Self, ProblemType>
 	where
 		Self: Sized,
 	{
@@ -88,23 +92,24 @@ pub trait UnstructuredSolverGenerator<ProblemType: Model>: SolverGenerator<Probl
 	}
 }
 
-pub struct AsStructuredSolverGeneratorWrapper<G: UnstructuredSolverGenerator<P>, P: Model>(
-	G,
-	PhantomData<P>,
-);
+pub struct AsStructuredSolverGeneratorWrapper<
+	'a,
+	G: UnstructuredSolverGenerator<'a, P>,
+	P: ModelView,
+>(G, PhantomData<&'a P>);
 
-impl<G: UnstructuredSolverGenerator<P>, P: Model> SolverGenerator<P>
-	for AsStructuredSolverGeneratorWrapper<G, P>
+impl<'a, G: UnstructuredSolverGenerator<'a, P>, P: ModelView> SolverGenerator<'a, P>
+	for AsStructuredSolverGeneratorWrapper<'a, G, P>
 {
 	type SolverType = G::SolverType;
 	type ErrorType = G::ErrorType;
-	fn generate(&self, model: &P) -> Result<Self::SolverType, Self::ErrorType> {
+	fn generate(&self, model: &'a P) -> Result<Self::SolverType, Self::ErrorType> {
 		self.0.generate(model)
 	}
 }
 
-impl<G: UnstructuredSolverGenerator<P>, P: Model> StructuredSolverGenerator<P>
-	for AsStructuredSolverGeneratorWrapper<G, P>
+impl<'a, G: UnstructuredSolverGenerator<'a, P>, P: ModelView> StructuredSolverGenerator<'a, P>
+	for AsStructuredSolverGeneratorWrapper<'a, G, P>
 {
 	fn nodes(&self) -> Box<dyn Iterator<Item = usize>> {
 		if let Some(cap) = self.0.size() {

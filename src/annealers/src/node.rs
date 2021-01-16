@@ -45,6 +45,12 @@ impl<R: Real> Spin<R> {
 	}
 }
 
+impl<R: Real> Default for Spin<R> {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
 impl<R: Real> SingleNode for Spin<R> {
 	type RealType = R;
 	fn get_value(&self, b: bool) -> R {
@@ -65,6 +71,12 @@ impl<R: Real> Binary<R> {
 		}
 	}
 	// TODO: add calculate_prod()
+}
+
+impl<R: Real> Default for Binary<R> {
+	fn default() -> Self {
+		Self::new()
+	}
 }
 
 impl<R: Real> SingleNode for Binary<R> {

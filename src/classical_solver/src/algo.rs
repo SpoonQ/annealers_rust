@@ -1,4 +1,4 @@
-use annealers::model::SingleModel;
+use annealers::model::SingleModelView;
 use annealers::node::{Binary, Node, SingleNode};
 use annealers::repr::BinaryRepr;
 use annealers::set::NodeSet;
@@ -12,7 +12,7 @@ unsafe fn calculate_flip_cost<S: NodeSet, M: SingleNode>(
 	state: &BinaryRepr,
 	index: usize,
 ) -> M::RealType {
-	let term = prod.to_it().fold(M::RealType::from_i32(1), |p, i| {
+	let term = prod.iter().fold(M::RealType::one(), |p, i| {
 		if i == index {
 			p
 		} else {
@@ -27,26 +27,25 @@ unsafe fn calculate_flip_cost<S: NodeSet, M: SingleNode>(
 	}
 }
 
-pub fn simulated_annealing<T: Rng, P: SingleModel<NodeType = Binary<R>>, R: Real>(
+pub fn simulated_annealing<T: Rng, P: SingleModelView<Node = Binary<R>>, R: Real>(
 	random: &mut T,
 	state: &mut BinaryRepr,
-	beta_schedule: &[<P::NodeType as Node>::RealType],
+	beta_schedule: &[<P::Node as Node>::RealType],
 	sweeps_per_round: usize,
 	model: &P,
 ) {
 	assert!(state.len() == model.size());
 	let size = model.size();
 	let node = model.node();
-	let mut energy_diffs =
-		std::iter::repeat(<<P::NodeType as Node>::RealType as Default>::default())
-			.take(size)
-			.collect::<Vec<_>>();
+	let mut energy_diffs = std::iter::repeat(<<P::Node as Node>::RealType as Default>::default())
+		.take(size)
+		.collect::<Vec<_>>();
 	let d = node.get_value(true) - node.get_value(false);
 	let dd = d * d;
 	for prod in model.prods() {
 		let weight = model.get_weight(&prod);
-		for i in prod.to_it() {
-			energy_diffs[i] += unsafe { calculate_flip_cost(&node, &prod, &state, i) } * weight;
+		for i in prod.iter() {
+			energy_diffs[i] += unsafe { calculate_flip_cost(node, &prod, &state, i) } * weight;
 		}
 	}
 	for beta in beta_schedule.iter() {
@@ -64,11 +63,11 @@ pub fn simulated_annealing<T: Rng, P: SingleModel<NodeType = Binary<R>>, R: Real
 						state.flip_unchecked(i);
 					}
 					let stat = unsafe { state.get_unchecked(i) };
-					energy_diffs[i] *= <P::NodeType as Node>::RealType::from_i32(-1);
+					energy_diffs[i] *= -<P::Node as Node>::RealType::one();
 					for neigh in model.neighbors(i) {
 						if neigh.len() != 1 {
 							let weight = model.get_weight(&neigh);
-							for j in neigh.to_it() {
+							for j in neigh.iter() {
 								if i != j {
 									if stat != unsafe { state.get_unchecked(j) } {
 										energy_diffs[j] += dd * weight;

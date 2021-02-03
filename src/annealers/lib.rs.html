@@ -81,6 +81,9 @@
 <span id="62">62</span>
 <span id="63">63</span>
 <span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">model</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">node</span>;
@@ -91,7 +94,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">variable</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span> {
-	<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">model</span>::{<span class="ident">FixedSingleModel</span>, <span class="ident">Model</span>, <span class="ident">SingleModel</span>};
+	<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">model</span>::{<span class="ident">FixedSingleModelView</span>, <span class="ident">SingleModelView</span>};
 	<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">solver</span>::{<span class="ident">ClassicalSolver</span>, <span class="ident">SolverGenerator</span>, <span class="ident">UnstructuredSolverGenerator</span>};
 }
 
@@ -146,5 +149,8 @@
 		}
 	}
 }
+
+<span class="kw">const</span> <span class="ident">TRUE_VAL</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">true</span>;
+<span class="kw">const</span> <span class="ident">FALSE_VAL</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "annealers";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

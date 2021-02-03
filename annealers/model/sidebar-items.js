@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FixedSingleNeighborIter",""],["FixedSingleProdIter",""],["FixedSingleQuadricModel",""]],"trait":[["FixedSingleModel",""],["Model",""],["SingleModel",""]]});
+initSidebarItems({"struct":[["FixedSingleQuadricModel",""],["Neighbors",""],["Prods",""],["SingleModel",""]],"trait":[["FixedSingleModelView",""],["ModelView",""],["SingleModelView",""]]});

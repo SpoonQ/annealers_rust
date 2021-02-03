@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["annealers"] = [{"text":"impl&lt;S:&nbsp;NodeSet&gt; Iterator for FixedSingleProdIter&lt;S&gt;","synthetic":false,"types":[]},{"text":"impl&lt;S:&nbsp;NodeSet&gt; Iterator for FixedSingleNeighborIter&lt;S&gt;","synthetic":false,"types":[]},{"text":"impl Iterator for UnstructuredEdgeIter","synthetic":false,"types":[]}];
+implementors["annealers"] = [{"text":"impl&lt;S:&nbsp;NodeSet&gt; Iterator for Prods&lt;S&gt;","synthetic":false,"types":[]},{"text":"impl&lt;S:&nbsp;NodeSet&gt; Iterator for Neighbors&lt;S&gt;","synthetic":false,"types":[]},{"text":"impl&lt;'a&gt; Iterator for BinaryReprIter&lt;'a&gt;","synthetic":false,"types":[]},{"text":"impl Iterator for UnstructuredEdgeIter","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

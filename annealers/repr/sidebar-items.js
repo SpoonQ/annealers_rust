@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BinaryRepr",""]]});
+initSidebarItems({"struct":[["BinaryRepr",""],["BinaryReprIter",""]]});
